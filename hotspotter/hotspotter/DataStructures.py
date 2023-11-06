@@ -131,7 +131,7 @@ class HotspotterTables(DynStruct):
 class HotspotterDirs(DynStruct):
     def __init__(self, db_dir):
         super(HotspotterDirs, self).__init__()
-        import load_data2 as ld2
+        import hotspotter.load_data2 as ld2
         from os.path import join
         # Class variables
         self.db_dir       = db_dir

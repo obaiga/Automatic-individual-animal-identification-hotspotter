@@ -128,11 +128,11 @@ class FilterConfig(ConfigBase):
         removes invalid parameter settings over all cfgs (move to QueryConfig)
         '''
         # Ensure the list of on filters is valid given the weight and thresh
-        if filt_cfg.ratio_thresh <= 1:
+        if filt_cfg.ratio_thresh is None or filt_cfg.ratio_thresh <= 1:
             filt_cfg.ratio_thresh = None
-        if filt_cfg.roidist_thresh >= 1:
+        if filt_cfg.roidist_thresh is None or filt_cfg.roidist_thresh >= 1:
             filt_cfg.roidist_thresh = None
-        if filt_cfg.bursty_thresh   <= 1:
+        if filt_cfg.bursty_thresh is None or filt_cfg.bursty_thresh   <= 1:
             filt_cfg.bursty_thresh = None
         # FIXME: Non-Independent parameters.
         # Need to explicitly model correlation somehow

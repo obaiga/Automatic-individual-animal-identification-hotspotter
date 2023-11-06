@@ -113,7 +113,7 @@ def horiz_string(str_list):
     '''
     all_lines = []
     hpos = 0
-    for sx in xrange(len(str_list)):
+    for sx in range(len(str_list)):
         str_ = str(str_list[sx])
         lines = str_.split('\n')
         line_diff = len(lines) - len(all_lines)
@@ -125,7 +125,7 @@ def horiz_string(str_list):
             all_lines[lx] += line
             hpos = max(hpos, len(all_lines[lx]))
         # Horizontal padding
-        for lx in xrange(len(all_lines)):
+        for lx in range(len(all_lines)):
             hpos_diff = hpos - len(all_lines[lx])
             if hpos_diff > 0:
                 all_lines[lx] += ' ' * hpos_diff
@@ -459,14 +459,14 @@ def explore_module(module_, seen=None, maxdepth=2, nonmodules=False):
 # --- Util ---
 def alloc_lists(num_alloc):
     'allocates space for a numpy array of lists'
-    return [[] for _ in xrange(num_alloc)]
+    return [[] for _ in range(num_alloc)]
 
 
 def ensure_list_size(list_, size_):
     'extend list to max_cx'
     lendiff = (size_) - len(list_)
     if lendiff > 0:
-        extension = [None for _ in xrange(lendiff)]
+        extension = [None for _ in range(lendiff)]
         list_.extend(extension)
 
 
@@ -856,7 +856,7 @@ def longest_existing_path(_path):
 
 def path_ndir_split(path, n):
     path, ndirs = split(path)
-    for i in xrange(n - 1):
+    for i in range(n - 1):
         path, name = split(path)
         ndirs = name + os.path.sep + ndirs
     return ndirs
@@ -1026,7 +1026,7 @@ def grep(string, pattern):
 
 
 def correct_zeros(M):
-    index_gen = iprod(*[xrange(_) for _ in M.shape])
+    index_gen = iprod(*[range(_) for _ in M.shape])
     for index in index_gen:
         if M[index] < 1E-18:
             M[index] = 0
@@ -1884,7 +1884,7 @@ def cartesian(arrays, out=None):
     out[:, 0] = np.repeat(arrays[0], m)
     if arrays[1:]:
         cartesian(arrays[1:], out=out[0:m, 1:])
-        for j in xrange(1, arrays[0].size):
+        for j in range(1, arrays[0].size):
             out[j * m:(j + 1) * m, 1:] = out[0:m, 1:]
     return out
 

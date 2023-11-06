@@ -112,7 +112,7 @@ def load_csv_tables(db_dir, allow_new_dir=True):
         helpers.checkpath(chip_table, verbose=True)
         helpers.checkpath(name_table, verbose=True)
         helpers.checkpath(image_table, verbose=True)
-        import db_info
+        import hotspotter.db_info as db_info
 
         def assign_alternate(tblname):
             path = join(db_dir, tblname)

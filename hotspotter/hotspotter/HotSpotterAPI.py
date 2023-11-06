@@ -325,6 +325,7 @@ class HotSpotter(DynStruct):
         hs.prefs.chip_cfg       = Config.default_chip_cfg()
         hs.prefs.feat_cfg       = Config.default_feat_cfg(hs)
         hs.prefs.query_cfg      = Config.default_vsmany_cfg(hs)
+        # hs.prefs.query_cfg      = Config.default_vsone_cfg(hs)
         hs.prefs.autochip_cfg   = Config.default_autochip_cfg(hs)
         hs.prefs.autoquery_cfg  = Config.default_autoquery_cfg(hs)
         hs.prefs.cluster_cfg    = Config.default_cluster_cfg(hs)

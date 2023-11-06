@@ -233,7 +233,7 @@ def args_postprocess(args):
 
 
 def fix_args_shortnames(args):
-    import params
+    from . import params
     global ARGS_
     #print('[argparse2] fix_args_shortnames(): %r' % args.db)
     #print('[argparse2] mapping %r to %r' % (args.db, args.dbdir))
@@ -256,7 +256,7 @@ def fix_args_shortnames(args):
 
 def fix_args_with_cache(args):
     'Returns the database directory based on cache'
-    import fileio as io
+    from . import fileio as io
     global ARGS_
     if args.dbdir is None and not args.nocache_db:
         # Read from cache
@@ -277,8 +277,9 @@ def fix_args_with_cache(args):
 def parse_arguments(defaultdb=None, **kwargs):
     '''Defines the arguments for hotspotter'''
     global ARGS_
-    parser2 = make_argparse2('HotSpotter - Individual Animal Recognition',
-                             version='???')
+    # parser2 = make_argparse2('HotSpotter - Individual Animal Recognition',
+    #                          version='???')
+    parser2 = make_argparse2('HotSpotter - Individual Animal Recognition')
     commands_argparse(parser2)
     database_argparse(parser2)
     dev_argparse(parser2)

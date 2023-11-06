@@ -291,7 +291,7 @@ class Pref(PrefNode):
         raise AttributeError('attribute: %s.%s not found' % (self._intern.name, name))
 
     def iteritems(self):
-        for (key, val) in self.__dict__.iteritems():
+        for (key, val) in self.__dict__.items():
             if key in self._printable_exclude:
                 continue
             yield (key, val)
@@ -303,7 +303,7 @@ class Pref(PrefNode):
         Children Pref can be optionally separated'''
         pref_dict = {}
         struct_dict = {}
-        for (key, val) in self.iteritems():
+        for (key, val) in self.items():
             if split_structs_bit and isinstance(val, Pref):
                 struct_dict[key] = val
                 continue
@@ -392,7 +392,8 @@ class Pref(PrefNode):
     def update(self, **kwargs):
         #print('Updating Preference: kwargs = %r' % (kwargs))
         self_keys = set(self.__dict__.keys())
-        for key, val in kwargs.iteritems():
+        # for key, val in kwargs.iteritems():
+        for key, val in kwargs.items():
             if key in self_keys:
                 #if type(val) == types.ListType:
                     #val = val[0]

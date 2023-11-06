@@ -54,36 +54,33 @@ helpers.ensuredir(GLOBAL_CACHE_DIR)
 # =============================================================================
 ### New database path
 
-# dpath = 'C:\\Users\\95316\\code1\\Snow leopard'
-dpath = '/Users/obaiga/Jupyter/Python-Research/'
-dpath = '/Users/obaiga/Research/Snow Leopard/'
-dpath = '/Users/obaiga/github/hotspotter/'
+dpath = '/Users/obaiga/Jupyter/Python-Research/SealID'
 
 ###Database name
-new_db = 'ds_160'
+new_db = 'seal_hotspotter'
 # new_db = 'Test2'
 db_dir = join(dpath, new_db)
 ### Full path: dapth + new_db
 
 ### Whether add a new database
-Flag_new_db = False
+Flag_new_db = True
 
 ### Whether add new images 
-Flag_add_img = False
+Flag_add_img = True
 # img_dpath = 'C:\\Users\\95316\\code1\\Snow leopard\\RepresentativeTests_right_Cat1'
-img_dpath = join(db_dir,'images-db')
+img_dpath = join(dpath,'SealID_dataset/full images/segmented_all')
 
 ### whether add new chips 
 Flag_add_chip = False
 Flag_add_chip_software = True     ## True: chip size created by Rectle;
                                  ## False: full orginal image size 
-chip_dpath = join(db_dir,'Polygon')
+chip_dpath = join(dpath,'SealID_dataset/full images/Polygon')
 #chip_dpath = 'C:\Users\95316\code1\Snow leopard\RepresentativeTests_right_diff_cats\annotation'
 ### Chip (read xml files)
 seg_class_name = 'leopard'
 
 ### whether add new ID name (only works on already having chips)
-Flag_chip_ID = True
+# Flag_chip_ID = True
 # chip_ID_lis = ['Cat'+str(i) for i in range(9)]
 
 #%%
@@ -205,7 +202,7 @@ def Read_ROI_data(gx, type_name = 'leopard',Flag_add_chip_software=False):
 # =============================================================================
 
 
-if Flag_new_db & 0:
+if Flag_new_db & 1:
     if exists(db_dir):
         shutil.rmtree(db_dir)
 
