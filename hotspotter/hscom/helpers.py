@@ -9,7 +9,8 @@ into a global set of helper functions.
 Wow, pylint is nice for cleaning.
 '''
 from __future__ import division, print_function
-import __common__
+# import __common__
+import hscom.__common__ as __common__ 
 (print, print_, print_on, print_off,
  rrr, profile) = __common__.init(__name__, '[helpers]')
 # Scientific
@@ -19,8 +20,11 @@ from collections import OrderedDict
 from itertools import product as iprod
 from os.path import (join, relpath, normpath, split, isdir, isfile, exists,
                      islink, ismount, expanduser)
-import cPickle
-import cStringIO
+# import cPickle
+# import cStringIO
+import pickle as cPickle
+from io import StringIO as cStringIO
+
 import datetime
 import decimal
 import fnmatch
@@ -34,9 +38,12 @@ import textwrap
 import time
 import types
 import warnings
+
 # HotSpotter
-import tools
-from Printable import printableVal
+# import tools 
+import hscom.tools as tools
+# from Printable import printableVal
+from hscom.Printable import printableVal
 #print('LOAD_MODULE: helpers.py')
 
 # --- Globals ---

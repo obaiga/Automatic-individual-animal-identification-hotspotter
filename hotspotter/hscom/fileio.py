@@ -1,12 +1,13 @@
 from __future__ import division, print_function
-import __common__
+# import __common__
+import hscom.__common__ as __common__ 
 (print, print_, print_on, print_off,
  rrr, profile) = __common__.init(__name__, '[io]')
 # Python
 import os
 import fnmatch
 import pickle
-import cPickle
+# import cPickle
 from os.path import normpath, exists, realpath, join, expanduser, dirname
 import datetime
 import time
@@ -15,8 +16,11 @@ import numpy as np
 import cv2
 from PIL import Image
 from PIL.ExifTags import TAGS
+
 # Hotspotter
-import helpers
+# import helpers
+import hscom.helpers as helpers
+
 #import skimage
 #import shelve
 #import datetime

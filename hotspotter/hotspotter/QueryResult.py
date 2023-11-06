@@ -8,7 +8,7 @@ import numpy as np
 # HotSpotter
 from hscom import helpers
 from hscom.Printable import DynStruct
-import voting_rules2 as vr2
+import hotspotter.voting_rules2 as vr2
 
 
 FM_DTYPE  = np.uint32   # Feature Match datatype

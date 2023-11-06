@@ -3,14 +3,15 @@ from hscom import __common__
 print, print_, print_on, print_off, rrr, profile, printDBG =\
     __common__.init(__name__, '[mf]', DEBUG=False)
 # Python
-from itertools import izip
+# from itertools import izip
+from itertools import zip_longest as izip
 # Scientific
 import numpy as np
 # Hotspotter
-import QueryResult as qr
-import nn_filters
-import spatial_verification2 as sv2
-import voting_rules2 as vr2
+import hotspotter.QueryResult as qr
+import hotspotter.nn_filters as nn_filters
+import hotspotter.spatial_verification2 as sv2
+import hotspotter.voting_rules2 as vr2
 from hscom import helpers
 
 

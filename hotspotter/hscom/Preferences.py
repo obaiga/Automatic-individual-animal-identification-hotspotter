@@ -1,22 +1,36 @@
 from __future__ import division, print_function
-import __common__
+# import __common__
+from hscom import __common__
 (print, print_, print_on, print_off,
  rrr, profile) = __common__.init(__name__, '[pref]')
 # Python
-import cPickle
+# import cPickle
+import pickle as cPickle
 import os.path
 import sys
-import tools
+# import tools
+import hscom.tools as tools
 import traceback
 import warnings
 # Science
 import numpy as np
 # Qt
-from PyQt4 import QtCore, QtGui
-from PyQt4.Qt import (QAbstractItemModel, QModelIndex, QVariant, QWidget,
-                      QString, Qt, QObject, pyqtSlot)
+# from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
+try:
+    from PyQt4.QtCore import QString
+except ImportError:
+    # QtCore.Qstring can't be imported in Spyder since 2.3.1
+    QString = str
+    
+# from PyQt4.Qt import (QAbstractItemModel, QModelIndex, QVariant, QWidget,
+#                       Qt, QObject, pyqtSlot)
+from PyQt5.Qt import (QAbstractItemModel, QModelIndex, QVariant, QWidget,
+                      Qt, QObject, pyqtSlot)
+
 # HotSpotter
-from Printable import DynStruct
+# from Printable import DynStruct
+from hscom.Printable import DynStruct
 
 # ---
 # GLOBALS

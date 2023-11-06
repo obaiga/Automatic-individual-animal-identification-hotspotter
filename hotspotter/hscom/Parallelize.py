@@ -1,15 +1,17 @@
 # http://docs.python.org/2/library/multiprocessing.html
 from __future__ import print_function, division
-import __common__
+# import __common__
+from hscom import __common__
 (print, print_, print_on, print_off,
  rrr, profile, printDBG) = __common__.init(__name__, '[parallel]', DEBUG=False)
 # Python
-from itertools import izip
+# from itertools import izip
+from itertools import zip_longest as izip
 from os.path import exists
 import multiprocessing
 import sys
 # Hotspotter
-import helpers
+from hscom import helpers
 import pdb
 
 

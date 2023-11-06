@@ -1,7 +1,8 @@
 from __future__ import division, print_function
 import multiprocessing
 import argparse
-import cross_platform
+# import cross_platform
+import hscom.cross_platform as cross_platform
 # seemlessly fix any path issues
 cross_platform.ensure_pythonpath()
 

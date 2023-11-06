@@ -6,8 +6,8 @@ from hscom import __common__
 import re
 # HotSpotter
 from hscom import helpers
-import DataStructures as ds
-import matching_functions as mf
+import hotspotter.DataStructures as ds
+import hotspotter.matching_functions as mf
 
 
 @profile

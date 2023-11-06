@@ -11,7 +11,8 @@ from os.path import join
 from hscom import helpers
 from hscom import fileio as io
 from hscom.Parallelize import parallel_compute
-import extern_feat
+# import extern_feat
+import hotspotter.extern_feat as extern_feat
 import pdb
 
 

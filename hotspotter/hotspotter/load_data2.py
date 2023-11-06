@@ -18,7 +18,7 @@ import sys
 import numpy as np
 from PIL import Image
 # Hotspotter
-import DataStructures as ds
+import hotspotter.DataStructures as ds
 from hscom import helpers
 from hscom import tools
 

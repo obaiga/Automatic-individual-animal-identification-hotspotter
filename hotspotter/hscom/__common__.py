@@ -1,5 +1,6 @@
 from __future__ import division, print_function
-import __builtin__
+# import __builtin__
+import builtins as __builtin__
 import sys
 
 try:

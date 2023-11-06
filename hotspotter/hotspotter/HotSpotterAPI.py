@@ -6,7 +6,8 @@ import sys
 # Standard
 import os
 from os.path import exists, join, split, relpath
-from itertools import izip
+# from itertools import izip
+from itertools import zip_longest as izip
 import shutil
 import datetime
 # Science
@@ -18,23 +19,24 @@ from hscom import helpers
 from hscom import tools
 from hscom.Printable import DynStruct
 from hscom.Preferences import Pref
-import DataStructures as ds
-import Config
-import chip_compute2 as cc2
-import feature_compute2 as fc2
-import load_data2 as ld2
-import match_chips3 as mc3
-import matching_functions as mf
-import autochip as ac
+# import DataStructures as ds
+import hotspotter.DataStructures as ds
+import hotspotter.Config as Config
+import hotspotter.chip_compute2 as cc2
+import hotspotter.feature_compute2 as fc2
+import hotspotter.load_data2 as ld2
+import hotspotter.match_chips3 as mc3
+import hotspotter.matching_functions as mf
+import hotspotter.autochip as ac
 import pdb
-import autoquery as aq
+import hotspotter.autoquery as aq
 import MCL.mcl.mcl_clustering as mcl
 import time
-import sort_into_folders as sif
-import log_filing as lf
-import show_matrices as sm
-import linkage_clustering as lnk
-import get_params as prevprefs
+import hotspotter.sort_into_folders as sif
+import hotspotter.log_filing as lf
+import hotspotter.show_matrices as sm
+import hotspotter.linkage_clustering as lnk
+import hotspotter.get_params as prevprefs
 
 MCL_SELF_LOOP       = 0
 MCL_MULT_FACTOR     = 2

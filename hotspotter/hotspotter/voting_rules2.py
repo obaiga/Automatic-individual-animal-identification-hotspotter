@@ -3,7 +3,8 @@ from hscom import __common__
 (print, print_, print_on, print_off,
  rrr, profile) = __common__.init(__name__, '[vr2]')
 # Python
-from itertools import izip
+# from itertools import izip
+from itertools import zip_longest as izip
 # Scientific
 import pandas as pd
 import numpy as np

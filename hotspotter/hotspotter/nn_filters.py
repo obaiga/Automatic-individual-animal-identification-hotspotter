@@ -4,7 +4,8 @@ print, print_, print_on, print_off, rrr, profile, printDBG =\
     __common__.init(__name__, '[nnfilt]', DEBUG=False)
 import numpy as np
 from numpy import array
-from itertools import izip
+# from itertools import izip
+from itertools import zip_longest as izip
 
 eps = 1E-8
 
