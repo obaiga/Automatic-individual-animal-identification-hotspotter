@@ -17,7 +17,7 @@ If you want to extract ROI, set 'Flag_add_chip_software' = True and 'chip_dpath'
 modify function 'Read_ROI_data' based on your ROI formate.
 
 """
-#%%
+# In[packages]
 from __future__ import division, print_function
 from os.path import join, expanduser,split, exists
 import numpy as np
@@ -47,43 +47,28 @@ HOME = expanduser('~')
 GLOBAL_CACHE_DIR = join(HOME, '.hotspotter/global_cache')
 helpers.ensuredir(GLOBAL_CACHE_DIR)
 
+from collections import Counter 
+import pandas as pd
 
-#%%
+# In[custom flag]
 # =============================================================================
 #  Initialization (User needs to modify the below contens )
 # =============================================================================
-### New database path
 
-dpath = '/Users/obaiga/Jupyter/Python-Research/SealID'
-
-###Database name
-new_db = 'seal_hotspotter'
-# new_db = 'Test2'
-db_dir = join(dpath, new_db)
-### Full path: dapth + new_db
-
-### Whether add a new database
-Flag_new_db = True
-
-### Whether add new images 
-Flag_add_img = True
-# img_dpath = 'C:\\Users\\95316\\code1\\Snow leopard\\RepresentativeTests_right_Cat1'
-img_dpath = join(dpath,'SealID_dataset/full images/segmented_all')
-
-### whether add new chips 
-Flag_add_chip = False
-Flag_add_chip_software = True     ## True: chip size created by Rectle;
-                                 ## False: full orginal image size 
-chip_dpath = join(dpath,'SealID_dataset/full images/Polygon')
-#chip_dpath = 'C:\Users\95316\code1\Snow leopard\RepresentativeTests_right_diff_cats\annotation'
-### Chip (read xml files)
-seg_class_name = 'leopard'
+# ### whether add new chips 
+# Flag_add_chip = False
+# Flag_add_chip_software = True     ## True: chip size created by Rectle;
+#                                  ## False: full orginal image size 
+# chip_dpath = join(dpath,'SealID_dataset/full images/Polygon')
+# #chip_dpath = 'C:\Users\95316\code1\Snow leopard\RepresentativeTests_right_diff_cats\annotation'
+# ### Chip (read xml files)
+# seg_class_name = 'leopard'
 
 ### whether add new ID name (only works on already having chips)
 # Flag_chip_ID = True
 # chip_ID_lis = ['Cat'+str(i) for i in range(9)]
 
-#%%
+# In[functions]
 # =============================================================================
 #   Function 
 # =============================================================================
@@ -142,13 +127,13 @@ def open_database(db_dir=None):
     print('')
     return hs
 
-def Read_ROI_data(gx, type_name = 'leopard',Flag_add_chip_software=False):
+def Read_ROI_data(gx,plygon_dpath,type_name = 'leopard',Flag_add_chip_software=False):
     non_annotation_flag = False
     gname = hs.tables.gx2_gname[gx]
     
     if Flag_add_chip_software == True:
         cname = gname[:-3] + 'xml'
-        cdir = join(chip_dpath,cname)
+        cdir = join(plygon_dpath,cname)
         if not exists(cdir):
             non_annotation_flag = True
         else:
@@ -196,11 +181,19 @@ def Read_ROI_data(gx, type_name = 'leopard',Flag_add_chip_software=False):
     
     return roi
 
-#%%
+# In[create dataset]
 # =============================================================================
-#     Initialization -  dataset
+#     Initialization -  dataset (create a new dataset)
 # =============================================================================
+### New database path
+dpath = '/Users/obaiga/Jupyter/Python-Research/SealID'
+###Database name
+new_db = 'seal_hotspotter'
+db_dir = join(dpath, new_db)
+### Full path: dapth + new_db
 
+### Whether add a new database
+Flag_new_db = True
 
 if Flag_new_db & 1:
     if exists(db_dir):
@@ -214,8 +207,6 @@ print('[*back] valid new_db_dir = %r' % db_dir)
 io.global_cache_write('db_dir', db_dir)
 helpers.ensurepath(db_dir)
 
-
-
 defaultdb = None
 preload = False
 
@@ -224,27 +215,28 @@ args = parse_arguments(defaultdb, defaultdb == 'cache')
 hs = open_database(db_dir)
 
 
-#%%
+# In[load images]
 # =============================================================================
-#     Initialization -  images  
+#     Initialization -  images  (load your dataset images)
 # =============================================================================   
-#-------function: [hsgui]-[guiback]-def import_images_from_dir(back):
-    
+#-------function: [hsgui]-[guiback]-def import_images_from_dir(back):    
 #--------------------------------------------
-from collections import Counter 
-import pandas as pd
-# side = 'Right'
-# label = 'R'
-side = 'Left'
-label = 'L'
+'''
+custom by yourself 
+here is an example
+'''
+
+dataset_dpath = join(dpath,'SealID_dataset/full images')
 
 count_db = 1
-table_dir = join(db_dir,'table-%s-1.csv'%side)
+table_dir = join(dataset_dpath,'annotation.csv')
 table = pd.read_csv(table_dir,skipinitialspace=True)
+#### to output table column names, 
+# column_name = table.columns.tolist()
+ID_name_lis = np.array(table['class_id'])
+img_name_lis = np.array(table['file'])
 
-ID_name_lis = np.array(table['Name'])
-img_name_lis = np.array(table['Image'])
-
+img_dpath = join(dataset_dpath,'segmented_all')
 
 
 fpath_list = []
@@ -252,6 +244,7 @@ chip_ID_lis = []
 
 ID_count = Counter(ID_name_lis).most_common()
 Count_lis = []
+
 for i_IDname,i_Count in ID_count:
     Count_lis.append(i_Count)
     if i_Count >= count_db:
@@ -264,10 +257,7 @@ print(Counter(Count_lis).most_common())
 
 
 #%%
-if 0:
-    import glob
-    img_dpath = join(db_dir,'images-db')
-    fpath_list = glob.glob(join(img_dpath,'*.JPG'))
+Flag_add_img = True
 
 if Flag_add_img & 1:
     print('[*back] selected %r' % img_dpath)
@@ -275,8 +265,7 @@ if Flag_add_img & 1:
     hs.add_images(fpath_list)
 #        hs.add_templates(img_dpath)
     print('')
-        
-
+    
 '''     
 #------function def import_images_from_file(back):
 # File -> Import Images From File
@@ -284,46 +273,43 @@ if Flag_add_img & 1:
 '''
     
 
-#%%
+# In[load chips]
 # =============================================================================
 #     Initialization -  chips
 # =============================================================================
-# Flag_add_chip_table = True
-# Flag_add_chip_software = False
+'''
+custom by yourself
+'''
 Flag_add_chip_table = False
+Flag_add_chip_software = True
+plygon_dpath = join(dataset_dpath,'Polygon')
+
+Flag_add_chip = True
 
 if Flag_add_chip & 1:
     #-------function: [hsgui]-[guiback] - def add_chip(back):
     
     gx_lis = hs.get_valid_gxs()
     gx_lis_valid = gx_lis[len(gx_lis)-len(fpath_list):]
-    
-    if Flag_add_chip_table & 1:
-        table_dir = join(db_dir,'1674_Leopard_list.csv')
-        table = pd.read_csv(table_dir,skipinitialspace=True)
-        img_name_all = np.array(table['FileName'])
-        Xmin_lis = np.array(table['Xmin'])
-        Ymin_lis = np.array(table['Ymin'])
-        Xmax_lis = np.array(table['Xmax'])
-        Ymax_lis = np.array(table['Ymax'])
-        
+
     for gx in gx_lis_valid:
         
         if Flag_add_chip_software & 1:
-            roi = Read_ROI_data(gx,seg_class_name,Flag_add_chip_software)
-        elif Flag_add_chip_table & 1:
-            gname = hs.tables.gx2_gname[gx]
-            idx = np.where(img_name_all==gname)[0]
-            if len(idx)>0:
-                xm = int(Xmin_lis[idx[0]])
-                xM = int(Xmax_lis[idx[0]])
-                ym = int(Ymin_lis[idx[0]])
-                yM = int(Ymax_lis[idx[0]])
-                # xywh = map(int, map(round, (xm, ym, xM - xm, yM - ym)))
-                xywh = [xm, ym, xM - xm, yM - ym]
-                roi = np.array(xywh, dtype=np.int32)
-            else:
-                print('wrong image: %d'%gx)
+            roi = Read_ROI_data(gx,plygon_dpath,type_name='leopard',
+                                Flag_add_chip_software=Flag_add_chip_software)
+        # elif Flag_add_chip_table & 1:
+        #     gname = hs.tables.gx2_gname[gx]
+        #     idx = np.where(img_name_all==gname)[0]
+        #     if len(idx)>0:
+        #         xm = int(Xmin_lis[idx[0]])
+        #         xM = int(Xmax_lis[idx[0]])
+        #         ym = int(Ymin_lis[idx[0]])
+        #         yM = int(Ymax_lis[idx[0]])
+        #         # xywh = map(int, map(round, (xm, ym, xM - xm, yM - ym)))
+        #         xywh = [xm, ym, xM - xm, yM - ym]
+        #         roi = np.array(xywh, dtype=np.int32)
+        #     else:
+        #         print('wrong image: %d'%gx)
         else:
             roi = Read_ROI_data(gx,Flag_add_chip_software)
         
@@ -332,47 +318,43 @@ if Flag_add_chip & 1:
         cx = hs.add_chip(gx, roi)  # NOQA
 #    #    back.select_gx(gx)
         print('')
-#%%
+# In[load IDs]
+# =============================================================================
+#     Initialization -   new leopard ID name
+# =========================================================================
+'''
+custom by yourself
+'''
+Flag_chip_ID  = True
+note = 'Seal'
+
 if Flag_chip_ID & 1:
     #----function: [hsgui]-[guiback]- def change_chip_property(back, cid, key, val):
     key = 'name'
     # Table Edit -> Change Chip Property
     cx_lis = hs.get_valid_cxs()
     cx_lis_valid = cx_lis[len(cx_lis)-len(fpath_list):]
+    
     for cx,val in zip(cx_lis_valid,chip_ID_lis):
-        
-        if val[:5] == 'Leopa':
+    
+        # if val[:5] == 'Leopa':
             
-            note = 'Leopard_African_'
-            print(note)
-            key, val = map(str, (key, (val[len(note):]+'_'+side)))
-        else:
-            note = ''
-            key, val = map(str, (key, (val[len(note):]+'_'+side)))
-        # key, val = map(str, (key, (val[len(note):])))
+        #     note = 'Leopard_African_'
+        #     print(note)
+        #     key, val = map(str, (key, (val[len(note):]+'_'+side)))
+        # else:
+        #     note = ''
+        #     key, val = map(str, (key, (val[len(note):]+'_'+side)))
+        
+        key, val = map(str, (key, (note+'_'+str(val))))
+        
         print('[*back] change_chip_property(%r, %r, %r)' % (cx, key, val))
         if key in ['name', 'matching_name']:
             hs.change_name(cx, val)
         else:
             hs.change_property(cx, key, val)
         print('') 
-# In[]
-# # =============================================================================
-# #     Initialization -  new leopard ID name
-# # =============================================================================
-# if Flag_chip_ID == True & 0:
-#     #----function: [hsgui]-[guiback]- def change_chip_property(back, cid, key, val):
-#     key = 'name'
-#     # Table Edit -> Change Chip Property
-#     cx_lis = hs.get_valid_cxs()
-#     for cx,val in zip(cx_lis,chip_ID_lis):
-#         key, val = map(str, (key, val))
-#         print('[*back] change_chip_property(%r, %r, %r)' % (cx, key, val))
-#         if key in ['name', 'matching_name']:
-#             hs.change_name(cx, val)
-#         else:
-#             hs.change_property(cx, key, val)
-#         print('')        
+        
 # In[Save database]
 # =============================================================================
 #     Update database
@@ -396,24 +378,6 @@ cx_list = np.array(cx_list)  # HACK
 hs.load_chips(cx_list=cx_list)
 # hs.load_features(cx_list=cx_list)
 
-#%%
-# =============================================================================
-#     Main Query Part
-# =============================================================================
-#Detailed function: [hsgui]-[guiback]-function: query()
-if 0:
-    cx_list = hs.get_valid_cxs()
-    for cx in cx_list:
-        cid = hs.cx2_cid(cx)
-        print('[back] cx = %r' % cx)
-        print('[back] query(cid=%r)' % (cid))
-        
-        try:
-            res = hs.query(cx)
-        except Exception as ex:
-            # TODO Catch actually exceptions here
-            print('[back] ex = %r' % ex)
-            raise
         
 # In[Write flat table]
 # =============================================================================
@@ -474,3 +438,23 @@ path = join(cache_dir,'name_table.csv')
 table_ID = pd.read_csv(path,header=2)
 path = join(db_dir,'name_table.csv')
 table_ID.to_csv(path,index=0)
+
+
+#%%
+# =============================================================================
+#     Main Query Part (cannot operate in python3.7)
+# =============================================================================
+#Detailed function: [hsgui]-[guiback]-function: query()
+if 0:
+    cx_list = hs.get_valid_cxs()
+    for cx in cx_list:
+        cid = hs.cx2_cid(cx)
+        print('[back] cx = %r' % cx)
+        print('[back] query(cid=%r)' % (cid))
+        
+        try:
+            res = hs.query(cx)
+        except Exception as ex:
+            # TODO Catch actually exceptions here
+            print('[back] ex = %r' % ex)
+            raise

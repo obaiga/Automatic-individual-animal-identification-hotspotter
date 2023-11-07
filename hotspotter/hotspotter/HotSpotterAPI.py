@@ -841,7 +841,7 @@ class HotSpotter(DynStruct):
 
         hs.tables.cx2_theta = np.concatenate((hs.tables.cx2_theta, [theta]))
         prop_dict = hs.tables.prop_dict
-        for key in prop_dict.iterkeys():
+        for key in prop_dict.keys():
             prop_dict[key].append(props.get(key, ''))
         #hs.num_cx += 1
         cx = len(hs.tables.cx2_cid) - 1

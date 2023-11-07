@@ -619,14 +619,14 @@ def make_chip_csv(hs):
         cx2_roi = np.array([])
     cx2_theta = hs.tables.cx2_theta[valid_cx]
     prop_dict = {propkey: [cx2_propval[cx] for cx in iter(valid_cx)]
-                 for (propkey, cx2_propval) in hs.tables.prop_dict.iteritems()}
+                 for (propkey, cx2_propval) in hs.tables.prop_dict.items()}
     # Turn the chip indexes into a DOCUMENTED csv table
     header = '# chip table'
     column_labels = ['ChipID', 'ImgID', 'NameID', 'roi[tl_x  tl_y  w  h]', 'theta']
     column_list   = [cx2_cid, cx2_gx, cx2_nx, cx2_roi, cx2_theta]
     column_type   = [int, int, int, list, float]
     if not prop_dict is None:
-        for key, val in prop_dict.iteritems():
+        for key, val in prop_dict.items():
             column_labels.append(key)
             column_list.append(val)
             column_type.append(str)
