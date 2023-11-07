@@ -9,6 +9,8 @@ pip install pyhesaff==2.0.1
 
 ## Contribution
 1. from [Erotemic](https://github.com/Erotemic/hotspotter)
+   
+     Hotspotter macOS Installer: https://www.dropbox.com/s/q0vzz3xnjbxhsda/hotspotter_installer_mac.dmg?dl=0 
 2. from [ECE 18-7 in Seattle University](https://github.com/SU-ECE-18-7/hotspotter)
 3. from [ECE 17-7 in Seattle University](https://github.com/SU-ECE-17-7/hotspotter)
 
