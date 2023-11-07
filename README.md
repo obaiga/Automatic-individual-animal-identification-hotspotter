@@ -21,3 +21,8 @@ Reference:
 Nepovinnykh, E., Eerola, T., Biard, V., Mutka, P., Niemi, M., Kunnasranta, M. and Kälviäinen, H., 2022. SealID: Saimaa ringed seal re-identification dataset. Sensors, 22(19), p.7602.
 
 Nepovinnykh, E., Chelak, I., Eerola, T. and Kälviäinen, H., 2022. Norppa: Novel ringed seal re-identification by pelage pattern aggregation. arXiv preprint arXiv:2206.02498.
+
+## Create a custom image dataset
+1. Implement [create_new_db_step2.py](https://github.com/obaiga/Automatic-individual-animal-identification-hotspotter/blob/5a4921ac22c529cc9f9837e4a92990c9c3815d7b/create_new_db_step2.py)
+2. Use the Hotspotter application to query all images in the dataset: [Batch]-[Precompute queries]
+      
