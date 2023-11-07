@@ -50,24 +50,6 @@ helpers.ensuredir(GLOBAL_CACHE_DIR)
 from collections import Counter 
 import pandas as pd
 
-# In[custom flag]
-# =============================================================================
-#  Initialization (User needs to modify the below contens )
-# =============================================================================
-
-# ### whether add new chips 
-# Flag_add_chip = False
-# Flag_add_chip_software = True     ## True: chip size created by Rectle;
-#                                  ## False: full orginal image size 
-# chip_dpath = join(dpath,'SealID_dataset/full images/Polygon')
-# #chip_dpath = 'C:\Users\95316\code1\Snow leopard\RepresentativeTests_right_diff_cats\annotation'
-# ### Chip (read xml files)
-# seg_class_name = 'leopard'
-
-### whether add new ID name (only works on already having chips)
-# Flag_chip_ID = True
-# chip_ID_lis = ['Cat'+str(i) for i in range(9)]
-
 # In[functions]
 # =============================================================================
 #   Function 
