@@ -26,14 +26,16 @@ np.set_printoptions(precision = 2)
 # =============================================================================
 
 ### New database path
-dpath = '/Users/obaiga/Jupyter/Python-Research/SealID'
+dpath = '/Users/obaiga/Jupyter/Python-Research/Africaleopard/'
 ###Database name
-new_db = 'seal_hotspotter'
+new_db = 'non_iso'
+new_db = 'bright60'
+new_db = 'snow leopard'
 
-# flag = 'vsone'   ## flag = 'vsone' or 'vsmany'
+# flag = 'vsone_'   ## flag = 'vsone' or 'vsmany'
 flag = 'vsmany'   ## flag = 'vsone' or 'vsmany'
-# fg_flag = 'fg_'   #### only containing animal body without background
-fg_flag = ''
+fg_flag = 'fg'   #### only containing animal body without background
+# fg_flag = ''
 
 # =============================================================================
 #   Initilization
@@ -51,12 +53,8 @@ elif flag =='vsmany':
     pre_file = 'res_w1=@2,y0es`5;[=]_qcid='
     pre_save = 'vsmany_'
     
-if fg_flag == '':
-    result_dir = join(db_dir,'_hsdb','computed','query_results')
-    kpts_dir = join(db_dir,'_hsdb','computed','feats')
-elif fg_flag == 'fg_':
-    result_dir = join(db_dir,'_hsdb','computed','query_results_fg')
-    kpts_dir = join(db_dir,'_hsdb','computed','feats_fg')
+result_dir = join(db_dir,'_hsdb','computed','query_results')
+kpts_dir = join(db_dir,'_hsdb','computed','feats')
     
 chipname = 'cid%d_FEAT(hesaff+sift,0_9001)_CHIP(sz750).npz'
 
@@ -113,15 +111,16 @@ for i,icid in enumerate(cids):
         print('Cannot read file:'+file)
 
 df = pd.DataFrame(score_array)
-sentence = join(res_dir,('ImgScore_%s%sHS.xlsx')%(pre_save[2:],fg_flag))
+sentence = join(res_dir,('ImgScore_%s%s.xlsx')%(pre_save[2:],fg_flag))
 df.to_excel(sentence, index=False, header=False)
 
 df = pd.DataFrame(matched_kpts_array)
-sentence = join(res_dir,('MatchKpts_%s%sHS.xlsx')%(pre_save[2:],fg_flag))
+sentence = join(res_dir,('MatchKpts_%s%s.xlsx')%(pre_save[2:],fg_flag))
 df.to_excel(sentence, index=False, header=False)
 
 
 # In[modify similarity score]
+data_mof = '_diag'
 import copy 
 [weight,height] = score_array.shape
 
@@ -137,5 +136,5 @@ for irow in range(weight):
         
                   
 df = pd.DataFrame(score_mod)
-sentence = join(res_dir,('ImgScoreDigSum_%s%s.xlsx')%(pre_save[2:],fg_flag))
+sentence = join(res_dir,('ImgScore_%s%s%s.xlsx')%(pre_save[2:],fg_flag,data_mof))
 df.to_excel(sentence, index=False, header=False)

@@ -4,18 +4,8 @@ Created on Thu Apr  8 12:14:40 2021
 @author: obaiga
 
 ------------------
-Create own database
-Replace Hotspotter function: create new database; add images; add chips; modify ID name
+Create an Africa leopard image dataset
 ------------------
-
-Please before running the program, modify Initilization part 
-'dpath', 'new_db', 'image_dpath'
-Now, default 'annotation_dpath' is 'image_dpath'
-default chip size is original image size.
-
-If you want to extract ROI, set 'Flag_add_chip_software' = True and 'chip_dpath'
-modify function 'Read_ROI_data' based on your ROI formate.
-
 """
 # In[packages]
 from __future__ import division, print_function
@@ -168,10 +158,9 @@ def Read_ROI_data(gx,plygon_dpath,type_name = 'leopard',Flag_add_chip_software=F
 #     Initialization -  dataset (create a new dataset)
 # =============================================================================
 ### New database path
-dpath = '/Users/obaiga/Jupyter/Python-Research/SealID'
-
+dpath = '/Users/obaiga/Jupyter/Python-Research/Africaleopard'
 ###Database name
-new_db = 'seal_hotspotter'
+new_db = 'snow leopard'
 
 db_dir = join(dpath, new_db)
 ### Full path: dapth + new_db
@@ -209,35 +198,53 @@ hs = open_database(db_dir)
 custom by yourself 
 here is an example
 '''
-
-dataset_dpath = join(dpath,'SealID_dataset/full images')
-
-count_db = 1
-table_dir = join(dataset_dpath,'annotation.csv')
+#%%
+name = 'raw_data.csv'
+table_dir = join(dpath,new_db,name)
+img_dpath = '/Users/obaiga/Jupyter/Python-Research/Africaleopard/snow leopard/images_db/'
 table = pd.read_csv(table_dir,skipinitialspace=True)
-#### to output table column names, 
-# column_name = table.columns.tolist()
-ID_name_lis = np.array(table['class_id'])
-img_name_lis = np.array(table['file'])
 
-img_dpath = join(dataset_dpath,'segmented_all')
+# name = 'table.csv'
+# table_dir = join(dpath,name)
+# table = pd.read_csv(table_dir,skipinitialspace=True)
+# img_dpath = join('/Users/obaiga/Jupyter/Python-Research/Africaleopard',new_db,'img_db')
+
+#### print the table column name
+#### print(table.columns.tolist())
+
+Lis_Chip2ID = np.array(table['Name'])
+Lis_Img = np.array(table['Image'])
+Lis_ROI = np.array(table['roi[tl_x  tl_y  w  h]'])
+
+
+Lis_img_save = []
+Lis_chip2ID_save = []
+Lis_ROI_save = []
+#%%
+###### for non-isolated images
+# IDs_info = np.array(Counter(Lis_Chip2ID).most_common())
+# idx_save = np.where(IDs_info[:,1].astype(np.int32) > 1)[0]
+##### only search for classes with required class size
+
+# for iidx in idx_save:
+#     ans = np.where(Lis_Chip2ID == IDs_info[iidx,0])[0]
+#     Lis_img_save = np.concatenate((Lis_img_save,Lis_Img[ans]))
+#     Lis_chip2ID_save = np.concatenate((Lis_chip2ID_save,Lis_Chip2ID[ans]))
+#     Lis_ROI_save = np.concatenate((Lis_ROI_save,Lis_ROI[ans]))
+##########----------------------------
+import copy
+
+Lis_img_save = copy.deepcopy(Lis_Img)
+chip_ID_lis = copy.deepcopy(Lis_Chip2ID)
+Lis_ROI_save = copy.deepcopy(Lis_ROI)
 
 
 fpath_list = []
-chip_ID_lis = []
 
-ID_count = Counter(ID_name_lis).most_common()
-Count_lis = []
+for iidx,iimg in enumerate(Lis_img_save):
 
-for i_IDname,i_Count in ID_count:
-    Count_lis.append(i_Count)
-    if i_Count >= count_db:
-        imgcx = np.where(ID_name_lis==i_IDname)
-        imgs = img_name_lis[imgcx]
-        for i_img in imgs:
-            fpath_list.append(join(img_dpath,i_img))
-            chip_ID_lis.append(i_IDname)
-print(Counter(Count_lis).most_common())
+    fpath_list.append(join(img_dpath,iimg))
+    # chip_ID_lis.append(Lis_chip2ID_save[iidx])
 
 
 #%%
@@ -264,10 +271,6 @@ if Flag_add_img & 1:
 '''
 custom by yourself
 '''
-Flag_add_chip_table = False
-Flag_add_chip_software = True
-plygon_dpath = join(dataset_dpath,'Polygon')
-
 Flag_add_chip = True
 
 if Flag_add_chip & 1:
@@ -278,27 +281,9 @@ if Flag_add_chip & 1:
 
     for gx in gx_lis_valid:
         
-        if Flag_add_chip_software & 1:
-            roi = Read_ROI_data(gx,plygon_dpath,type_name='leopard',
-                                Flag_add_chip_software=Flag_add_chip_software)
-        # elif Flag_add_chip_table & 1:
-        #     gname = hs.tables.gx2_gname[gx]
-        #     idx = np.where(img_name_all==gname)[0]
-        #     if len(idx)>0:
-        #         xm = int(Xmin_lis[idx[0]])
-        #         xM = int(Xmax_lis[idx[0]])
-        #         ym = int(Ymin_lis[idx[0]])
-        #         yM = int(Ymax_lis[idx[0]])
-        #         # xywh = map(int, map(round, (xm, ym, xM - xm, yM - ym)))
-        #         xywh = [xm, ym, xM - xm, yM - ym]
-        #         roi = np.array(xywh, dtype=np.int32)
-        #     else:
-        #         print('wrong image: %d'%gx)
-        else:
-            roi = Read_ROI_data(gx,Flag_add_chip_software)
-        
-        roi = np.array(roi,dtype=np.int32)
-        
+        roi_str = Lis_ROI_save[gx].strip('[').strip(']')
+        roi = [int(round(float(_))) for _ in roi_str.split()]
+
         cx = hs.add_chip(gx, roi)  # NOQA
 #    #    back.select_gx(gx)
         print('')
@@ -310,7 +295,7 @@ if Flag_add_chip & 1:
 custom by yourself
 '''
 Flag_chip_ID  = True
-note = 'Seal'
+note = ''
 
 if Flag_chip_ID & 1:
     #----function: [hsgui]-[guiback]- def change_chip_property(back, cid, key, val):
@@ -321,16 +306,9 @@ if Flag_chip_ID & 1:
     
     for cx,val in zip(cx_lis_valid,chip_ID_lis):
     
-        # if val[:5] == 'Leopa':
-            
-        #     note = 'Leopard_African_'
-        #     print(note)
-        #     key, val = map(str, (key, (val[len(note):]+'_'+side)))
-        # else:
-        #     note = ''
-        #     key, val = map(str, (key, (val[len(note):]+'_'+side)))
+        key, val = map(str, (key, (str(val))))
         
-        key, val = map(str, (key, (note+'_'+str(val))))
+        # key, val = map(str, (key, (note+'_'+str(val))))
         
         print('[*back] change_chip_property(%r, %r, %r)' % (cx, key, val))
         if key in ['name', 'matching_name']:

@@ -27,7 +27,7 @@ def dict_subset(dict_, keys):
     'Returns the a subset of the dictionary'
     keys_ = set(keys)
     return {key: val for (key, val)
-            in dict_.iteritems() if key in keys_}
+            in dict_.items() if key in keys_}
 
 
 def listrm(list_, item):
@@ -52,7 +52,7 @@ def any_inlist(list_, search_list):
 
 def signthreshweight_str(on_filters):
     stw_list = []
-    for key, val in on_filters.iteritems():
+    for key, val in on_filters.items():
         ((sign, thresh), weight) = val
         stw_str = key
         if thresh is None and weight == 0:
